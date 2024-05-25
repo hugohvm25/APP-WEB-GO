@@ -13,9 +13,22 @@ criar uma rota com a biblioteca http.ListenAndServe para que seja reconhecido pe
 package main
 
 import (
+	"database/sql"
+	"html/template"
 	"net/http"
-	"text/template"
+
+	_ "github.com/lib/pq"
 )
+
+func conectaComBancoDeDados() *sql.DB {
+	// Corrigindo a string de conexão
+	conexao := "user=postegres dbname=loja_hugo password=1234 host=localhost sslmode=disable"
+	db, err := sql.Open("postgres", conexao)
+	if err != nil {
+		panic(err.Error())
+	}
+	return db
+}
 
 // criando uma estrutura para que sejam armazenados novos produtos de forma automatizada sem ter que ficar criando tabelas dentro do arquivo HTML individualmente
 type Produto struct {
@@ -29,6 +42,8 @@ type Produto struct {
 var temp = template.Must(template.ParseGlob("templates/*.html"))
 
 func main() {
+	db := conectaComBancoDeDados()
+	defer db.Close()
 	//sempre que tiver um / ela vai respoder para um segundo parametro - NÃO ESQUECER DO : PARA DETERMINAR A ROTA HTML
 	http.HandleFunc("/", index)
 	http.ListenAndServe(":8000", nil)
@@ -43,6 +58,7 @@ func index(w http.ResponseWriter, r *http.Request) {
 		{"Bermuda", "Verde", 80, 2},
 		{"Tenis", "Preto", 100, 1},
 		{"Teste Produto", "Diferente", 1000, 1},
+		{"Teste Produto2", "Diferente", 1000, 1},
 	}
 	temp.ExecuteTemplate(w, "Index", produtos)
 }
