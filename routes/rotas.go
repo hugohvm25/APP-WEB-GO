@@ -16,4 +16,6 @@ func CarregarRotas() {
 	http.HandleFunc("/new", controlers.New)
 	//criar rota da inserção de dados no banco
 	http.HandleFunc("/insert", controlers.Insert)
+	//criar rota para deletar o dado
+	http.HandleFunc("/delete", controlers.Delete)
 }

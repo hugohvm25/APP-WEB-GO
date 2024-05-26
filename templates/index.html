@@ -38,6 +38,10 @@
                             <td>{{.Descricao}}</td>
                             <td>{{.Preco}}</td>
                             <td>{{.Quantidade}}</td>
+                            <!-- não vai ser preciso usar o botão deletar sem o modal -->
+                            <!-- <td><a href="/delete?id={{.Id}}" class="btn btn-danger">Deletar</a></td> -->
+                            <!-- tratamento de segurança para evitar apagar o item diretamente com um modal de alerta com um SCRIPT de JS-->
+                            <td><button onclick="onDelete('{{.Id}}')" class="btn btn-danger" >Deletar</button></td>
                         </tr>
                         {{end}}                      
                     </tbody>                    
@@ -49,6 +53,15 @@
         </div>
     </div>
 </body>
+
+<script>
+    function onDelete(id){
+        let resposta = confirm("Deseja deletar o produto selecionado?")
+        if (resposta){
+            window.location = "/delete?id=" + id
+        }
+    }
+</script>
 
 </html>
 {{end}}

@@ -50,3 +50,11 @@ func Insert(w http.ResponseWriter, r *http.Request) {
 	//ao terminar de preencher o formulário, a página deve atualizar e retornar para a página principal
 	http.Redirect(w, r, "/", 301)
 }
+
+func Delete(w http.ResponseWriter, r *http.Request) {
+	//temos que buscar na url o ID que está sendo requisitado pelo metodo GET
+	idDoProduto := r.URL.Query().Get("id")
+	models.DeletaProduto(idDoProduto)
+	//redireciona/atualiza a página pelo responsewriter para a página princilal "/"
+	http.Redirect(w, r, "/", 301)
+}

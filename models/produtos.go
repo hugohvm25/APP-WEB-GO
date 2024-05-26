@@ -34,6 +34,7 @@ func BuscaTodosProdutos() []Produto {
 		}
 
 		//após o scaneamento vai inserir na variavel p cada dado para ser incluido no slice
+		p.Id = id
 		p.Nome = nome
 		p.Descricao = descricao
 		p.Preco = preco
@@ -68,5 +69,19 @@ func CriarNovoProduto(nome, descricao string, preco float64, quantidde int) {
 	}
 	//se não tiver algum erro, execute a inserção no banco
 	insereDadosNoBanco.Exec(nome, descricao, preco, quantidde)
+	defer db.Close()
+}
+
+// recebe o parametro porém não faz diferença apesar de ser int pois será deletado
+func DeletaProduto(id string) {
+	db := db.ConectaComBancoDeDados()
+
+	//prepara o banco de dados para executar a função desejada de deletar o produto e a condição pelo ID do produto
+	deletarOProduto, err := db.Prepare("delete from produtos where id=$1")
+	if err != nil {
+		panic(err.Error())
+	}
+	//executa a ação caso não tenha erro
+	deletarOProduto.Exec(id)
 	defer db.Close()
 }
