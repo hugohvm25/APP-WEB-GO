@@ -14,4 +14,6 @@ func CarregarRotas() {
 	http.HandleFunc("/", controlers.Index)
 	//adicionando a rota para abrir a nova página ao clicar no botão de adicionar produtos passando o caminho do botão /new e o controler
 	http.HandleFunc("/new", controlers.New)
+	//criar rota da inserção de dados no banco
+	http.HandleFunc("/insert", controlers.Insert)
 }

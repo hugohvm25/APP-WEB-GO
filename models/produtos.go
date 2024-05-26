@@ -61,4 +61,12 @@ func BuscaTodosProdutos() []Produto {
 func CriarNovoProduto(nome, descricao string, preco float64, quantidde int) {
 	db := db.ConectaComBancoDeDados()
 
+	//comando de inclusão no banco passando o comando de insert e fazendo a verificação dos valores de acordo com o tipo de dados aceito no banco
+	insereDadosNoBanco, err := db.Prepare("insert into produtos(nome, descricao, preco, quantidade) values ($1, $2, $3, $4)")
+	if err != nil {
+		panic(err.Error())
+	}
+	//se não tiver algum erro, execute a inserção no banco
+	insereDadosNoBanco.Exec(nome, descricao, preco, quantidde)
+	defer db.Close()
 }
